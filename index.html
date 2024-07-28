@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <meta charset="UTF-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <title>Document</title>
+      <style>
+         *,
+         *::before,
+         *::after {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+         }
+         body {
+            font-family: "Open Sans", sans-serif;
+            height: 100vh;
+         }
+         .bold {
+            font-weight: 800;
+         }
+         .container,
+         .invoice-box {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px 1px solid black;
+            border-radius: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 100px;
+            box-shadow: 0px 0px 10px 0px #0003;
+         }
+         h1 {
+            text-align: center;
+         }
+         label {
+            display: block;
+            margin-bottom: 5px;
+         }
+         input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            border-radius: 5px;
+            outline: none;
+            border: 1px solid #ccc;
+         }
+         button {
+            padding: 10px;
+            background-color: #4caf50;
+            color: white;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 10px;
+         }
+         button:hover {
+            background-color: #45a049;
+         }
+         p {
+            width: 100%;
+         }
+         select {
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 1rem;
+         }
+         .invoice-box {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 30px;
+            border: 1px solid #eee;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+         }
+         .invoice-box table {
+            width: 100%;
+            line-height: inherit;
+            text-align: left;
+            border-collapse: collapse;
+         }
+         .invoice-box table td {
+            padding: 5px;
+            vertical-align: top;
+         }
+         .invoice-box table tr td:nth-child(2) {
+            text-align: right;
+         }
+         .invoice-box table tr.top table td {
+            padding-bottom: 20px;
+            min-width: 200px;
+         }
+         .invoice-box table tr.top table td.title {
+            font-size: 45px;
+            line-height: 56px;
+            color: #333;
+         }
+         .invoice-box table tr.information table td {
+            padding-bottom: 40px;
+         }
+         .invoice-box table tr.heading td {
+            background: #eee;
+            border-bottom: 1px solid #ddd;
+            font-weight: bold;
+         }
+         .invoice-box table tr.details td {
+            padding-bottom: 20px;
+         }
+         .invoice-box table tr.item td {
+            border-bottom: 1px solid #eee;
+         }
+         .invoice-box table tr.item.last td {
+            border-bottom: none;
+         }
+         .invoice-box table tr.total td:nth-child(2) {
+            border-top: 2px solid #eee;
+            font-weight: bold;
+         }
+         .delete-button {
+            display: none;
+            position: absolute;
+            right: 10px;
+            width: 40px;
+            top: 50%;
+            transform: translateY(-10%);
+            transform: translateX(20%);
+            background-color: red;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            padding: 5px 10px;
+            cursor: pointer;
+            border-radius: 3px;
+            transition: transform 0.3s;
+         }
+         button.delete-button:hover + img {
+            transform: scale(5) rotate(20deg); /* Example transformation */
+         }
+         .item:hover > td {
+            position: relative;
+         }
+         .item:hover > td > .delete-button {
+            display: inline-block;
+         }
+         img {
+         }
+      </style>
+   </head>
+   <body>
+      <div class="container">
+         <h1>Tip Calculator</h1>
+         <p>Enter the bill amount and tip percentage to calculate the total.</p>
+         <label for="name">Product name</label>
+         <select class="form-control" name="name" id="name">
+            <option>Grilled Chicken Salad</option>
+            <option>Spaghetti Carbonara</option>
+            <option>Lemonade</option>
+            <option>Garlic Bread</option>
+         </select>
+         <label for="quantity">Quantity:</label>
+         <input type="number" id="quantity" />
+         <label for="price">Price:</label>
+         <input type="number" id="price" />
+         <button>ADD</button>
+      </div>
+      <div class="invoice">
+         <div class="invoice-box">
+            <table cellpadding="0" cellspacing="0">
+               <tr class="top">
+                  <td colspan="2">
+                     <table>
+                        <tr>
+                           <td class="title">
+                              <h2>The Lounge</h2>
+                           </td>
+                           <td class="date">
+                              <p>Invoice #: 001234</p>
+                              <p>Created: 2024-07-26</p>
+                           </td>
+                        </tr>
+                     </table>
+                  </td>
+               </tr>
+               <tr class="information">
+                  <td colspan="2">
+                     <table>
+                        <tr>
+                           <td>
+                              123 Food Street<br />
+                              Culinary City, Flavor Country<br />
+                              info@tyroneieee.com
+                           </td>
+                           <td>
+                              John Doe<br />
+                              Table Number: 5
+                           </td>
+                        </tr>
+                     </table>
+                  </td>
+               </tr>
+               <tr class="heading">
+                  <td>Item</td>
+                  <td>Price</td>
+               </tr>
+               <!-- <tr class="item">
+                  <td>Grilled Chicken Salad (2x)</td>
+                  <td>$24.00<button class="delete-button">Delete</button></td>
+               </tr>
+               <tr class="item">
+                  <td>Spaghetti Carbonara</td>
+                  <td>$15.00<button class="delete-button">Delete</button></td>
+               </tr>
+               <tr class="item">
+                  <td>Garlic Bread (3x)</td>
+                  <td>$15.00<button class="delete-button">Delete</button></td>
+               </tr> -->
+            </table>
+         </div>
+      </div>
+   </body>
+   <script>
+      const calculateButton = document.querySelector("button");
+      const totalElement = document.getElementById("total");
+      const nameSelect = document.getElementById("name");
+      const quantityInput = document.getElementById("quantity");
+      const priceInput = document.getElementById("price");
+      const reduceInput = document.getElementById("reduce");
+      const tipInput = document.getElementById("tip");
+      const date = document.getElementsByClassName("date");
+      var trTotal = document.createElement("tr");
+      var tdTotal = document.createElement("td");
+      var p_subTotal = document.createElement("p");
+      var p_Tax = document.createElement("p");
+      var td = document.createElement("td");
+      var p_Total = document.createElement("p");
+      var td_discount = document.createElement("td");
+      td_discount.textContent = "Discount:";
+      td_InputDiscount = document.createElement("td");
+      var input_discount = document.createElement("input");
+      input_discount.type = "number";
+      input_discount.id = "discount";
+      input_discount.placeholder = "Discount (%)";
+      td_InputDiscount.appendChild(input_discount);
+      tr_discount = document.createElement("tr");
+      tr_discount.appendChild(td_discount);
+      tr_discount.appendChild(td_InputDiscount);
+
+      var td_discount = document.createElement("td");
+      td_discount.textContent = "Tip:";
+      td_inputTip = document.createElement("td");
+      var inputTip = document.createElement("input");
+      inputTip.type = "number";
+      inputTip.id = "tip";
+      inputTip.placeholder = "Tip ($)";
+      td_inputTip.appendChild(inputTip);
+      tr_Tip = document.createElement("tr");
+      tr_Tip.appendChild(td_discount);
+      tr_Tip.appendChild(td_inputTip);
+      var foodName = "Grilled Chicken Salad";
+      const totalArr = [];
+      var tip_value = 0;
+      var discount_value = 0;
+      var totol_bill = 0;
+      var subtotal = 0;
+      var before_value;
+      const today = new Date();
+
+      const day = today.getDate();
+      const month = (today.getMonth() + 1).toString().padStart(2, "0");
+      const year = today.getFullYear();
+
+      function getRandomFiveDigitNumber() {
+         return Math.floor(Math.random() * 90000) + 10000;
+      }
+
+      const randomNumber = getRandomFiveDigitNumber();
+      date[0].children[0].textContent = `Invoice #: ${randomNumber}`;
+      date[0].children[1].textContent = `Created: ${year}-${month}-${day}`;
+
+      calculateButton.addEventListener("click", () => {
+         const total_price = quantityInput.value * priceInput.value;
+
+         var newTr = document.createElement("tr");
+         var nameTd = document.createElement("td");
+         var priceTd = document.createElement("td");
+         var deletebtn = document.createElement("button");
+         deletebtn.className = "delete-button";
+         let img = document.createElement("img");
+         img.src = "delete.svg"; // Set the source of the image
+         img.alt = "Delete"; // Set an alt attribute for accessibility
+
+         // Append the image to the button
+         deletebtn.appendChild(img);
+
+         var table = document.querySelector("table");
+
+         trTotal.className = "total";
+
+         if (total_price > 0) {
+            var trElement = document.querySelector("tr.total");
+            if (trElement) {
+               td.remove();
+               trElement.remove();
+            }
+            table.appendChild(newTr);
+            table.appendChild(tr_discount);
+            table.appendChild(tr_Tip);
+            table.appendChild(trTotal);
+            newTr.appendChild(nameTd);
+
+            newTr.appendChild(priceTd);
+
+            newTr.className = "item";
+            totalArr.push(total_price);
+            var total = totalArr.reduce((sum, i) => {
+               return sum + i;
+            }, 0);
+            subtotal = total;
+            p_subTotal.textContent = `Subtotal: $${total}`;
+            p_Tax.textContent = `Tax (10%): $${(total * 0.1).toFixed(2)}`;
+            totol_bill = (total + total * 0.1).toFixed(2);
+            before_value = (total + total * 0.1).toFixed(2);
+            p_Total.textContent = `Total: $${totol_bill}`;
+            trTotal.appendChild(td);
+            trTotal.appendChild(tdTotal);
+            tdTotal.appendChild(p_subTotal);
+            tdTotal.appendChild(p_Tax);
+            tdTotal.appendChild(p_Total);
+
+            nameTd.textContent = `${foodName} (${quantityInput.value}x)`;
+            priceTd.textContent = `$${total_price.toFixed(2)}`;
+            priceTd.appendChild(deletebtn);
+            var after_tax = subtotal + subtotal * 0.1;
+
+            //  deletebtn action
+            deletebtn.addEventListener("click", function () {
+               const row = this.closest("tr");
+               const price = this.closest("td");
+               let numericStr = price.textContent.match(/[0-9.]+/)[0];
+               let numberValue = parseFloat(numericStr);
+               subtotal = subtotal - numberValue;
+               totol_bill = subtotal - subtotal * 0.1;
+               totalArr.push(-numberValue);
+
+               if (inputTip.value && input_discount) {
+               } else if (inputTip.value) {
+                  tip_value = inputTip.value;
+                  var TipTotal = parseFloat(subtotal) + parseFloat(tip_value);
+                  p_Total.textContent = `Total: $${TipTotal.toFixed(2)}`;
+               } else if (input_discount) {
+                  discount_value = input_discount.value;
+                  after_tax = subtotal + subtotal * 0.1;
+                  var discount_total = after_tax * (discount_value / 100);
+                  var total_after_discount = after_tax - discount_total;
+                  p_Total.textContent = `Total: $${total_after_discount.toFixed(
+                     2
+                  )}`;
+               }
+               p_subTotal.textContent = `Subtotal: $${subtotal.toFixed(2)}`;
+               p_Tax.textContent = `Tax (10%): $${(subtotal * 0.1).toFixed(2)}`;
+               p_Total.textContent = `Total: $${totol_bill.toFixed(2)}`;
+
+               row.remove();
+            });
+
+            //  tip change action
+            inputTip.addEventListener("change", function () {
+               var total = totalArr.reduce((sum, i) => {
+                  return sum + i;
+               }, 0);
+               before_value = (total + total * 0.1).toFixed(2);
+
+               if (inputTip.value) {
+                  tip_value = this.value;
+                  var TipTotal = parseFloat(totol_bill) + parseFloat(tip_value);
+                  p_Total.textContent = `Total: $${TipTotal.toFixed(2)}`;
+               } else if (input_discount.value) {
+                  var discount_value = (input_discount.value * 1) / 100;
+                  p_Total.textContent = `Total: $${(
+                     before_value -
+                     before_value * discount_value +
+                     inputTip.value
+                  ).toFixed(2)}`;
+               } else {
+                  p_Total.textContent = `Total: $${(
+                     (before_value * 1 - before_value * discount_value) *
+                     1
+                  ).toFixed(2)}`;
+               }
+            });
+
+            //  discount change action
+            input_discount.addEventListener("change", function () {
+               var total = totalArr.reduce((sum, i) => {
+                  return sum + i;
+               }, 0);
+               before_value = (total + total * 0.1).toFixed(2);
+               if (input_discount.value) {
+                  discount_value = this.value;
+
+                  after_tax = total + total * 0.1;
+                  var discount_total = totol_bill * (discount_value / 100);
+                  totol_bill = totol_bill - discount_total;
+                  p_Total.textContent = `Total: $${totol_bill.toFixed(2)}`;
+               } else {
+                  var Tip_ = inputTip.value * 1;
+                  console.log(Tip_);
+                  if (inputTip.value) {
+                     totol_bill = before_value * 1 + parseFloat(inputTip.value);
+                  } else {
+                     totol_bill = before_value * 1;
+                  }
+                  p_Total.textContent = `Total: $${totol_bill.toFixed(2)}`;
+               }
+            });
+         }
+      });
+   </script>
+</html>
