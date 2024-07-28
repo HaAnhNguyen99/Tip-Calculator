@@ -220,7 +220,7 @@
       </div>
    </body>
    <script>
-      const calculateButton = document.querySelector("button");
+      const Add_btn = document.querySelector("button");
       const totalElement = document.getElementById("total");
       const nameSelect = document.getElementById("name");
       const quantityInput = document.getElementById("quantity");
@@ -278,7 +278,21 @@
       date[0].children[0].textContent = `Invoice #: ${randomNumber}`;
       date[0].children[1].textContent = `Created: ${year}-${month}-${day}`;
 
-      calculateButton.addEventListener("click", () => {
+      function getTipInput() {
+         const tip = document.getElementById("tip");
+         if (tip) {
+            return true;
+         }
+      }
+      function getDiscountInput() {
+         const discount = document.getElementById("discount");
+         if (discount) {
+            return true;
+         }
+      }
+
+      //Add btn
+      Add_btn.addEventListener("click", () => {
          const total_price = quantityInput.value * priceInput.value;
 
          var newTr = document.createElement("tr");
@@ -287,14 +301,12 @@
          var deletebtn = document.createElement("button");
          deletebtn.className = "delete-button";
          let img = document.createElement("img");
-         img.src = "delete.svg"; // Set the source of the image
-         img.alt = "Delete"; // Set an alt attribute for accessibility
+         img.src = "delete.svg";
+         img.alt = "Delete";
 
          // Append the image to the button
          deletebtn.appendChild(img);
-
          var table = document.querySelector("table");
-
          trTotal.className = "total";
 
          if (total_price > 0) {
@@ -333,6 +345,8 @@
             priceTd.appendChild(deletebtn);
             var after_tax = subtotal + subtotal * 0.1;
 
+            console.log(inputTip);
+
             //  deletebtn action
             deletebtn.addEventListener("click", function () {
                const row = this.closest("tr");
@@ -342,21 +356,11 @@
                subtotal = subtotal - numberValue;
                totol_bill = subtotal - subtotal * 0.1;
                totalArr.push(-numberValue);
-
-               if (inputTip.value && input_discount) {
-               } else if (inputTip.value) {
-                  tip_value = inputTip.value;
-                  var TipTotal = parseFloat(subtotal) + parseFloat(tip_value);
-                  p_Total.textContent = `Total: $${TipTotal.toFixed(2)}`;
-               } else if (input_discount) {
-                  discount_value = input_discount.value;
-                  after_tax = subtotal + subtotal * 0.1;
-                  var discount_total = after_tax * (discount_value / 100);
-                  var total_after_discount = after_tax - discount_total;
-                  p_Total.textContent = `Total: $${total_after_discount.toFixed(
-                     2
-                  )}`;
-               }
+               const tip = document.getElementById("tip");
+               const discount = document.getElementById("discount");
+               console.log(tip);
+               tip.value = "";
+               discount.value = "";
                p_subTotal.textContent = `Subtotal: $${subtotal.toFixed(2)}`;
                p_Tax.textContent = `Tax (10%): $${(subtotal * 0.1).toFixed(2)}`;
                p_Total.textContent = `Total: $${totol_bill.toFixed(2)}`;
@@ -370,23 +374,25 @@
                   return sum + i;
                }, 0);
                before_value = (total + total * 0.1).toFixed(2);
-
                if (inputTip.value) {
                   tip_value = this.value;
-                  var TipTotal = parseFloat(totol_bill) + parseFloat(tip_value);
+                  var TipTotal =
+                     parseFloat(before_value) + parseFloat(tip_value);
                   p_Total.textContent = `Total: $${TipTotal.toFixed(2)}`;
-               } else if (input_discount.value) {
+               } else if (input_discount.value !== "") {
                   var discount_value = (input_discount.value * 1) / 100;
+
                   p_Total.textContent = `Total: $${(
-                     before_value -
-                     before_value * discount_value +
-                     inputTip.value
+                     before_value * 1 -
+                     before_value * 1 * discount_value +
+                     inputTip.value * 1
                   ).toFixed(2)}`;
                } else {
-                  p_Total.textContent = `Total: $${(
-                     (before_value * 1 - before_value * discount_value) *
-                     1
-                  ).toFixed(2)}`;
+                  console.log("before_value" + before_value);
+                  console.log("discount_value" + discount_value);
+                  p_Total.textContent = `Total: $${(before_value * 1).toFixed(
+                     2
+                  )}`;
                }
             });
 
@@ -400,12 +406,11 @@
                   discount_value = this.value;
 
                   after_tax = total + total * 0.1;
-                  var discount_total = totol_bill * (discount_value / 100);
-                  totol_bill = totol_bill - discount_total;
+                  var discount_total = after_tax * (discount_value / 100);
+                  totol_bill = after_tax - discount_total;
                   p_Total.textContent = `Total: $${totol_bill.toFixed(2)}`;
                } else {
                   var Tip_ = inputTip.value * 1;
-                  console.log(Tip_);
                   if (inputTip.value) {
                      totol_bill = before_value * 1 + parseFloat(inputTip.value);
                   } else {
